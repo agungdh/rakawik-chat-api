@@ -18,13 +18,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: chat
     redis:
       host: 127.0.0.1
       port: 6379
+  mongodb:
+    host: 127.0.0.1
+    port: 27017
+    database: chat
+    username: admin
+    password: admin
+    authentication-database: admin
 
 minio:
   endpoint: http://127.0.0.1:9000
