@@ -99,6 +99,7 @@ jobs:
             agungdh/rakawik-chat-api:${{ env.VERSION }}-${{ matrix.arch }}
             ghcr.io/agungdh/rakawik-chat-api:${{ env.VERSION }}-${{ matrix.arch }}
           push: true
+          provenance: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
