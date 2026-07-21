@@ -10,4 +10,7 @@ public class UserResponse {
     private Long id;
     private String username;
     private String fullName;
+
+    @Builder.Default
+    private Boolean online = false;
 }

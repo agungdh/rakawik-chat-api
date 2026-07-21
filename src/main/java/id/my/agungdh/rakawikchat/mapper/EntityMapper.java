@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface EntityMapper {
 
+    @Mapping(target = "online", ignore = true)
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "contentType", expression = "java(message.getContentType().name())")

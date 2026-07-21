@@ -2,6 +2,7 @@ package id.my.agungdh.rakawikchat.config;
 
 import id.my.agungdh.rakawikchat.security.TokenService;
 import id.my.agungdh.rakawikchat.security.UserContext;
+import id.my.agungdh.rakawikchat.service.PresenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class StompAuthInterceptor implements ChannelInterceptor {
 
     private final TokenService tokenService;
+    private final PresenceService presenceService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -29,6 +31,7 @@ public class StompAuthInterceptor implements ChannelInterceptor {
                 if (userContext != null) {
                     accessor.setUser(new StompPrincipal(userContext.getUsername()));
                     accessor.getSessionAttributes().put("user", userContext);
+                    presenceService.setOnline(userContext.getUsername());
                 }
             }
         }

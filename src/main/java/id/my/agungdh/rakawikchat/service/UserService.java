@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,16 +18,21 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final EntityMapper entityMapper;
+    private final PresenceService presenceService;
 
     public UserResponse getCurrentUser(UserContext userContext) {
         User user = userRepository.findById(userContext.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return entityMapper.toUserResponse(user);
+        UserResponse resp = entityMapper.toUserResponse(user);
+        resp.setOnline(presenceService.isOnline(user.getUsername()));
+        return resp;
     }
 
     public List<UserResponse> getAllUsers() {
+        Set<String> onlineUsers = presenceService.getOnlineUsernames();
         return userRepository.findAll().stream()
                 .map(entityMapper::toUserResponse)
+                .peek(u -> u.setOnline(onlineUsers.contains(u.getUsername())))
                 .collect(Collectors.toList());
     }
 }
